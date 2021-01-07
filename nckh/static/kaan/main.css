@@ -1,0 +1,12 @@
+
+.left-menu {
+  width: 225px !important;
+  height: 100%;
+  float: left;
+}
+.right-menu {
+  padding-top: 80px;
+  width: 100%;
+  height: auto;
+  float: left;
+}

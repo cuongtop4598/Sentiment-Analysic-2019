@@ -1,0 +1,53 @@
+{% extends 'kaan/base.html' %}
+{% load static %}
+{% load poll_extras %}
+{% block content1 %}
+<div class='container'>
+    <div class='row'>
+         <div class='form-group col-md-8'>
+            <form method="post">
+    {% csrf_token %}
+    <label style="font-size: 20px;" for="updateB">Danh mục sản phẩm</label>
+    <select class="form-control mb-3" id="updateB" name="choicesB" onchange="perform();">
+    <option selected="selected" disabled>Chọn sản phẩm cần Update</option>
+        {% for brand in Brands %}
+        <option value="{{brand.id}}" >{{brand.trademark}}</option>
+        {% endfor %}
+    </select>
+    <select class="form-control" id="updateP" name="choicesP" style="display:none;">
+
+    </select> 
+    <p id="sendData"></p>
+    <div class='text-center'>
+        <button class="btn btn-success px-3">Update</button>
+    </div>
+    
+</form>
+        </div>
+        <div class='col-md-4'>
+            <a style="max-width:100%" href=""><img class="img-fluid img-thumbnail" src="static/kaan/images/banner.jpg" alt=""></a>
+        </div>
+    </div>
+</div>
+
+<script>
+    function check()
+    {
+        return document.getElementById("updateB").value;
+    }
+    function perform()
+    {
+        sP = document.getElementById("updateP");
+        sP.style="display:block";
+        sP.innerHTML = "";
+        {% for phone in Phones %}
+            if("{{phone.brand_id}}" == check())
+            {
+                sP.innerHTML += "<option value=\"{{phone.id}}\" >{{phone.name}}</option>"
+            }
+        {% endfor %}
+        sP.innerHTML += "<option value=\"0\">Tất cả</option>";
+    }
+
+</script>
+{% endblock content1 %}

@@ -1,0 +1,112 @@
+{% extends 'kaan/base.html' %}
+{% load static %}
+{% block content1 %}
+<link rel="stylesheet" type="text/css" href="{% static 'kaan/predict.css' %}">
+<div class="post-comment">
+    <div class="container">
+        <div class="row">
+            <div class="topic-comment col-md-7">
+                <div class='predict-container'>
+                    <div class="form-group">
+                    <form action="" method="post" id="form1">
+
+                        <label for="id_comment">Hãy nhập bình luận</label>
+                        <br>
+                        <div class="input-group">
+		                    <div class="input-group-prepend">
+		                        <span class="input-group-text">Bình luận:</span>
+	                        </div>
+                            {% csrf_token %}
+                             {{ fc.comment }}
+	                    </div>
+                        
+                        <br>
+                        <div class='form-group'>
+                                <label style="margin-top:10px;" for="para" id="para">Chọn mô hình</label><br>
+                             {{fs.selectlist}}
+                                </select>
+                        </div>
+                        
+                        
+                        <button class="btn btn-success px-4 mt-4" type='submit'>Submit</button>
+                    </form>
+                    </div>
+                    <p id="displayASTM"></p>
+                </div>
+            </div>
+                    <!-- end topic-comment   -->
+            <div class="content-comment col-md-5">
+                <div class="form-group">
+                
+                
+                <p id="question" onclick="question();"></p>
+                <form id="form2" method="post" style="display:none;">
+                {% csrf_token %}
+                <label for="id_lcmt">Nhập bình luận : </label>
+                <br>
+                {{ fl.lcmt }}
+                <br>
+                
+                <label for="id_tag">Chọn đánh giá : </label><br>
+                {{ fl.tag }}
+                <br>
+                <button class="btn btn-success px-4 mt-3" type="submit">Submit</button>
+                </form>
+                </div>
+<script>
+    function question()
+    {
+        pquestion = document.getElementById("question");
+        pquestion.innerHTML = "Bạn Có Muốn Lưu Lại để học Không?";
+        pquestion.innerHTML += "<br><span class=\"btn btn-success px-4 mt-3 mr-5\"id=\"btnYes\" onclick=\"showLearn();\">Có</span><span class=\"btn btn-success mt-3 px-4\"id=\"btnNo\" onclick=\"hide();\">Không</span>";
+    }
+    function showLearn()
+    {
+        form2 = document.getElementById("form2");
+        form2.style = "display:block;";
+    }
+    function hide()
+    {
+        pquestion = document.getElementById("question");
+        pquestion.style = "display:none";
+    }
+    var text = {{ data_cmt | safe }};
+    ASTM = document.getElementById("displayASTM");
+    textfield = document.getElementById("display");
+    if( text[1] != "")
+    {
+        console.log(text[0]);
+        if( text[0] == -1 ){
+           
+            ASTM.style = "color:red;font-size: 20px;"
+            ASTM.innerHTML = "<span class=\"result\">Kết quả phân tích được: </span>NEGATIVE";
+        }
+        else if( text[0] == 0){
+            
+            ASTM.style = "color:yellow;font-size: 20px;"
+            ASTM.innerHTML = "<span class=\"result\">Kết quả phân tích được: </span>NORMAL";
+        }
+        else if( text[0] == 1)
+        {
+          
+            ASTM.style = "color:#28a745;font-size: 20px;"
+            ASTM.innerHTML = "<span class=\"result\">Kết quả phân tích được: </span>POSITIVE";
+        }
+        question();
+    } 
+</script>
+            </div>
+        </div>
+    </div>
+</div>
+<script>
+    var comm = document.getElementById("id_comment");
+    comm.setAttribute("class","form-control");
+    var selec = document.getElementById("id_selectlist");
+    selec.setAttribute("class","form-control"); 
+    var comm = document.getElementById("id_lcmt");
+    comm.setAttribute("class","form-control");
+    var comm = document.getElementById("id_tag");
+    comm.setAttribute("class","form-control");
+</script>
+{% endblock  %}

@@ -1,0 +1,94 @@
+{% extends 'kaan/base.html' %}
+{% load static %}
+{% block content1 %}
+<link rel="stylesheet" type="text/css" href="{% static 'kaan/index.css' %}">
+<div class="wp-content">
+    <div class="post-url">
+        <div class="container">
+            <div class="row">
+                <div class="topic-url col-md-6">
+                    <div class='link-container'>
+                        <form method="post" >
+                            <label for="id_url">Enter Your Link To Extract Data</label>
+                            {% csrf_token %}
+                            {{ fu.url }}
+                            <br>  
+                            <label style="margin-top:10px;" for="para" id="para">Chọn mô hình</label>
+                            {{fs.selectlist}}
+
+                            </select>
+                            <br> 
+                            <button class="button button2" type='submit' onclick="printf();">Extract</button>
+                        </form>
+                    </div>
+
+                    <textarea id="comment_url" rows="10"></textarea>
+<script>
+    {% if data %}
+    var text = {{ data | safe }};
+    function printf()
+    { 
+        textfield = document.getElementById('comment_url');
+        var l = text.length;
+        for(var i = 0 ; i < l; i++)
+        {
+            textfield.value += text[i][1] + "\n" + text[i][0] + "\n";
+        }
+    }
+    {% else %}
+    console.log("hi")
+    {% endif %}
+</script>
+                </div>
+                <div class="content-url col-md-6">
+
+                    <canvas id="myChart" style="height: 370px; width: 100%;"></canvas>
+                    <script src="{% static 'kaan/Chart.js' %}"></script>
+                    <script>
+                    {% if data %}
+                    var dt = {{ data | safe }};
+                    console.log(dt);
+                    var xlabels = ["1 Start","2 Start","3 Start","4 Start","5 Start"]
+                    var ctx = document.getElementById('myChart');
+                    var myChart = new Chart(ctx, {
+                        type: 'line',
+                        data: {
+                            labels: xlabels,
+                            datasets: [{
+                                label: 'Possitive',
+                                data: [1,2,3,4,5],
+                                fill : false,
+                                backgroundColor: 'rgba(255, 99, 132, 0.2)',
+                                borderWidth: 1
+                            },
+                            {
+                                label: 'Negative',
+                                data: [4,2,1,5,4],
+                                fill : false,
+                                backgroundColor: 'rgba(0, 99, 132, 0.2)',
+                                borderWidth: 1
+                            }
+                        ],
+                        }
+                    });
+                    {% else %}
+                        console.log("hello word !!!");
+                    {% endif %}
+                    </script>
+                    
+                </div>
+            <!-- end sidebar -->
+       
+            </div>
+
+
+        </div>
+    </div>
+        <!-- end port-url -->
+</div>
+            <!-- end content  -->
+            
+{% endblock content1 %}
+                
+
+
